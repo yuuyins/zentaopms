@@ -101,6 +101,14 @@ class taskModel extends model
             if(dao::isError()) return false;
 
             $taskID = $this->dao->lastInsertID();
+
+            /* Mark design version.*/
+            if(isset($this->config->qcVersion) && $task->design)
+            {   
+                $design = $this->loadModel('design')->getByID($task->design);
+                $this->dao->update(TABLE_TASK)->set('designVersion')->eq($design->version)->where('id')->eq($taskID)->exec();
+            }   
+
             if($this->post->story) $this->loadModel('story')->setStage($this->post->story);
             if($this->post->selectTestStory)
             {
