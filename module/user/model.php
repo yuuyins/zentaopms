@@ -1127,6 +1127,10 @@ class userModel extends model
         unset($newUser->password);
         unset($newUser->deleted);
         $newUser->company = $this->app->company->name;
+
+        /* App client will use session id as token. */
+        $newUser->token = session_id();
+
         return array('user' => $newUser);
     }
 
