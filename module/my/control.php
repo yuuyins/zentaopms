@@ -34,6 +34,39 @@ class my extends control
     public function index()
     {
         $this->view->title = $this->lang->my->common;
+        if($this->app->viewType == 'json')
+        {
+            $isManager = false;
+            if(in_array($this->app->user->role, $this->config->user->manager)) $isManager = true;
+
+            if(!$isManager)
+            {
+                $stories = $this->loadModel('story')->getUserStories($this->app->user->account, 'assignedTo');
+                $tasks   = $this->loadModel('task')->getUserTasks($this->app->user->account, 'assignedTo');
+                $bugs    = $this->loadModel('bug')->getUserBugs($this->app->user->account, 'assignedTo');
+
+                $myDelays = 0;
+                foreach($tasks as $task)
+                {
+                    if($task->deadline != '0000-00-00' and $task->deadline < date('Y-m-d') and strpos("wait|doing|pause", $task->status) !== false) $myDelays ++;
+                }
+
+                $this->view->myStories = count($stories);
+                $this->view->myTasks   = count($tasks);
+                $this->view->myDelays  = $myDelays;
+                $this->view->myBugs    = count($bugs);
+            }
+            else
+            {
+                $projects = $this->loadModel('project')->getPairs();
+                $this->view->myProjects = count($projects);
+                $this->view->myYearCost = round($this->dao->select('SUM(consumed) as consumed')->from(TABLE_TASK)->where('deleted')->eq(0)->andWhere('LEFT(openedDate, 4)')->eq(date('Y'))->andWhere('parent')->ge(0)->fetch('consumed'), 2);
+                $this->view->myAllCost  = round($this->dao->select('SUM(consumed) as consumed')->from(TABLE_TASK)->where('deleted')->eq(0)->andWhere('parent')->ge(0)->fetch('consumed'), 2);
+            }
+
+            $this->view->isManager = $isManager;
+        }
+
         $this->display();
     }
 

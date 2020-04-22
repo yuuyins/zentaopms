@@ -17,3 +17,5 @@ $config->user->contactField = 'mobile,phone,qq,dingding,weixin,skype,whatsapp,sl
 $config->user->failTimes    = 6;
 $config->user->lockMinutes  = 10;
 $config->user->batchCreate  = 10;
+
+$config->user->manager = array('pm', 'po', 'td', 'pd', 'qd', 'top');
