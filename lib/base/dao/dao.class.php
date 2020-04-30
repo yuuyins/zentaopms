@@ -1350,7 +1350,7 @@ class baseDAO
             {
                 $field['rule'] = 'int';
             }
-            elseif($type == 'float' or $type == 'double')
+            elseif($type == 'float' or $type == 'double' or $type == 'decimal')
             {
                 $field['rule'] = 'float';
             }
