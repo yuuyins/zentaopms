@@ -64,6 +64,34 @@ class my extends control
                 $this->view->myAllCost  = round($this->dao->select('SUM(consumed) as consumed')->from(TABLE_TASK)->where('deleted')->eq(0)->andWhere('parent')->ge(0)->fetch('consumed'), 2);
             }
 
+            $quickAccessList = array();
+            foreach($this->config->mobile->quickAccessList as $quickAccessKey)
+            {
+                if(isset($this->lang->menu->$quickAccessKey))
+                {
+                    list($label, $module, $method) = explode('|', $this->lang->menu->$quickAccessKey);
+                    if(commonModel::hasPriv($module, $method))
+                    {
+                        $quickAccess = new stdclass();
+                        $quickAccess->name = $label;
+                        $quickAccess->icon = $this->config->mobile->quickAccessIconList[$quickAccessKey];
+
+                        $quickAccessList[] = $quickAccess;
+                    }
+                }
+
+                if($quickAccessKey == 'more')
+                {
+                    $quickAccess = new stdclass();
+                    $quickAccess->name = $this->lang->more;
+                    $quickAccess->icon = $this->config->mobile->quickAccessIconList[$quickAccessKey];
+
+                    $quickAccessList[] = $quickAccess;
+                }
+            }
+
+            $this->view->quickAccessList = $quickAccessList;
+
             $this->view->isManager = $isManager;
         }
 

@@ -14,3 +14,15 @@ $config->mobile->todoBar  = array('today', 'yesterday', 'thisWeek', 'lastWeek', 
 $config->mobile->taskBar  = array('assignedTo', 'openedBy');
 $config->mobile->bugBar   = array('assignedTo', 'openedBy', 'resolvedBy');
 $config->mobile->storyBar = array('assignedTo', 'openedBy', 'reviewedBy');
+
+$config->mobile->quickAccessList = array('project', 'doc', 'report', 'train', 'ops', 'oa', 'feedback', 'more');
+
+$config->mobile->quickAccessIconList = array();
+$config->mobile->quickAccessIconList['project']  = 'menu_project';
+$config->mobile->quickAccessIconList['doc']      = 'menu_file';
+$config->mobile->quickAccessIconList['report']   = 'menu_statistic';
+$config->mobile->quickAccessIconList['train']    = 'menu_train';
+$config->mobile->quickAccessIconList['ops']      = 'menu_ops';
+$config->mobile->quickAccessIconList['oa']       = 'menu_oa';
+$config->mobile->quickAccessIconList['feedback'] = 'menu_feedback';
+$config->mobile->quickAccessIconList['more']     = 'menu_more';
