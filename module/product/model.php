@@ -1133,4 +1133,16 @@ class productModel extends model
             ->limit(1)
             ->fetch();
     }
+
+    /**
+     * App side call product details list.
+     *
+     * @param  int  $status
+     * @access public
+     * @return object
+     */
+    public function getApiProductList($status = 'wait')
+    {
+
+    }
 }

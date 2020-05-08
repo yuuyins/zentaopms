@@ -3,6 +3,8 @@ class product extends control
 {
     public function getApiProductList()
     {
+        $data = $this->product->getApiProductList('wait');
+a($data);die();
         $result = new stdClass();
         $result->status = 'success';
         $result->data   = array(
