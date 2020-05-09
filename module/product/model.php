@@ -1143,6 +1143,10 @@ class productModel extends model
      */
     public function getApiProductList($status = 'wait')
     {
-
+        $data = $this->dao->select('*')->from(TABLE_PRODUCT)
+            ->where('status')->eq($status)
+            ->andWhere('deleted')->eq(0)
+            ->fetchAll();
+        a($data);die();
     }
 }
