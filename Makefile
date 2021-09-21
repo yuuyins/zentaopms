@@ -11,7 +11,7 @@ clean:
 	rm -fr zentaotest
 	rm -fr *.tar.gz
 	rm -fr *.zip
-	rm -fr api*
+	# rm -fr api* # needed for common
 	rm -fr build/linux/lampp
 	rm -fr lampp
 common:
@@ -190,7 +190,7 @@ en:
 	zip -r -9 ZenTaoALM.$(VERSION).int.zip zentaoalm
 	rm -fr zentaoalm
 	echo $(VERSION).int > VERSION
-	make endeb
+	# make endeb # i only need rpm
 	make enrpm
 	echo $(VERSION) > VERSION
 endeb:
