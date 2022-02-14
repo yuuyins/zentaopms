@@ -1,0 +1,59 @@
+services:
+  mariadb:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: "minhasenha19"
+      MYSQL_USER: "zentao"
+      MYSQL_PASSWORD: "minhasenha19"
+      MYSQL_DATABASE: "zentao"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - mysql-log:/var/log/mysql
+      - mysql-etc:/etc/mysql
+    networks:
+      - zentao
+    ports:
+      - 3230:3306
+    healthcheck:
+      test: "/usr/bin/mysql zentao --user=zentao --password=minhasenha19 --silent --execute 'SELECT 1;'"
+      start_period: 5s
+      interval: 10s
+      timeout: 20s
+      retries: 3
+
+  apache:
+    image: httpd:2.4.52
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    restart: 'always'
+    networks:
+      - zentao
+    ports:
+      - 8081:80
+    command: sh -c "sed -i '242i ServerName localhost' /usr/local/apache2/conf/httpd.conf && sleep infinity"
+    tty: true
+
+  zentao:
+    image: php:8.1.2
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - zentao
+    ports:
+      - 7070:7070
+    volumes:
+      - ./:/zentao
+    working_dir: /zentao
+    command: sh -c "apt update && apt install -y make zip unzip tar libldap2-dev && docker-php-ext-configure ldap --with-libdir=/lib/x86_64-linux-gnu/ && docker-php-ext-install ldap && sleep infinity"
+    tty: true
+
+volumes:
+  mariadb:
+  mysql-data:
+  mysql-log:
+  mysql-etc:
+
+networks:
+  zentao: {}
